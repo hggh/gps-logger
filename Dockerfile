@@ -1,6 +1,5 @@
 FROM python:3.13-slim-bookworm
 EXPOSE 8000
-VOLUME /app/gpxviewr/local_settings.py
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -13,7 +12,7 @@ RUN apt-get install --no-install-recommends -y \
  git \
  libgdal32
 
-COPY gpxviewr /app
+COPY gpslogger /app
 COPY bootup.sh /bootup.sh
 
 COPY requirements.txt /app/
