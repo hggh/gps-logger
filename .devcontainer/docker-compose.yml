@@ -1,0 +1,25 @@
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - loggerdev
+    volumes:
+      - "../:/workspace:cached"
+  db:
+    image: postgis/postgis:17-3.5
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: geheim
+      POSTGRES_DB: logger
+    networks:
+      - loggerdev
+
+networks:
+  loggerdev:
+
+volumes:
+  db-data:

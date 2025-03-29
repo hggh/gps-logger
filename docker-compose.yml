@@ -1,0 +1,37 @@
+services:
+  web:
+    image: ghcr.io/hggh/gps-logger/web:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
+      POSTGRES_DB: logger
+      BOOT_MODE: web
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - type: bind
+        source: local_settings.py
+        target: /app/gpxviewr/local_settings.py
+      - type: bind
+        source: ./django-static
+        target: /static
+    networks:
+      - logger
+  db:
+    image: postgis/postgis:17-3.5
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
+      POSTGRES_DB: logger
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - logger
+
+networks:
+  logger:
+
+volumes:
+  db-data:

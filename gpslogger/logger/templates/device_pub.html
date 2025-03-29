@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if error == True %}
+<div class="alert alert-danger" role="alert">
+    Device or Publication not found!
+</div>
+{% endif %}
+
+{% if device %}
+    {% if device.seen_recently %}
+    <div class="alert alert-success" role="alert">
+        Device was seen within the last {{ device.seen_recently_minutes }} minutes.
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Device was not seen within the last {{ device.seen_recently_minutes }} minutes. (last seen: {{ device.get_last_position_datetime }})
+    </div>
+    {% endif %}
+
+    <div class="collapse" id="device_pub" data-slug="{{ device_pub.slug }}"></div>
+    <main class="col ps-md-2 pt-2">
+        <div id="map" style="width: 100%; height: 200px;"></div>
+    </main>
+{% endif %}
+
+{% endblock%}
