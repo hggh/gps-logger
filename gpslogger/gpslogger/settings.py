@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_otv47y4^53dd^9wu+g-+46oh5#)8#cvhn4mhzsqb4j2)xg6n4'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', default='django-insecure-_otv47y4^53dd^9wu+g-+46oh5#)8#cvhn4mhzsqb4j2)xg6n4')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', default='False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '192.168.178.166',]
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', default='localhost,192.168.178.166').split(',')
 
 
 # Application definition
@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'gpslogger.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": "logger",
-        "USER": "postgres",
-        "PASSWORD": "geheim",
+        "NAME": os.getenv('POSTGRES_DB', default="logger"),
+        "USER": os.getenv('POSTGRES_USER', default="postgres"),
+        "PASSWORD": os.getenv('POSTGRES_PASSWORD', default='geheim'),
         "HOST": "db"
     },
 }

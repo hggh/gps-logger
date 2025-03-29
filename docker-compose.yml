@@ -1,18 +1,17 @@
 services:
   web:
-    image: ghcr.io/hggh/gps-logger/web:latest
+    image: "ghcr.io/hggh/gps-logger/web:${VERSION:-latest}"
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
       POSTGRES_DB: logger
       BOOT_MODE: web
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?error}"
+      DJANGO_ALLOWED_HOSTS: "${DJANGO_ALLOWED_HOSTS}"
     ports:
-      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:8080:8000"
     volumes:
-      - type: bind
-        source: local_settings.py
-        target: /app/gpxviewr/local_settings.py
       - type: bind
         source: ./django-static
         target: /static
